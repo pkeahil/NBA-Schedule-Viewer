@@ -1,65 +1,78 @@
-import Image from "next/image";
+"use client";
+
+import React, { useEffect } from 'react';
+import Navbar from "./components/navbar";
+
+import games from './games.json';
 
 export default function Home() {
+  const [data, setData] = React.useState([]);
+
+  useEffect(() => {
+    const parsedData = games.map(item => ({
+      date: item.date,
+      time: item.time,
+      team1: item.away_team_name,
+      team2: item.home_team_name,
+      tvProvider: item.tv_providers,
+    }));
+    setData(parsedData);
+  }, []);
+
+  const [filter, setFilter] = React.useState("");
+
+  const filteredData = data.filter(item => {
+    return (
+      item.date.includes(filter) ||
+      item.time.includes(filter) ||
+      item.team1.includes(filter) ||
+      item.team2.includes(filter) ||
+      item.tvProvider.includes(filter)
+    );
+  });
+
+  function handleSearch(e) {
+    setFilter(e.target.value);
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="flex flex-col items-center min-h-screen bg-zinc-50 font-sans dark:bg-black">
+      <Navbar />
+      <div className="bg-zinc-700 p-5 my-5 rounded-lg w-1/3 text-center">
+        <p className="text-xl mb-2">NBA Games by TV Providers</p>
+        <input
+          type="search"
+          className="block py-2 pl-10 pr-4 w-full text-sm placeholder-gray-500 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+          id="search"
+          value={filter}
+          onChange={handleSearch}
+          placeholder="Search..."
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </div>
+      <div className="mx-10">
+        <table className="border rounded-lg w-full table-fixed">
+          <thead>
+            <tr>
+              <th className="p-3 border text-left">Date</th>
+              <th className="p-3 border text-left">Time</th>
+              <th className="p-3 border text-left">Team 1</th>
+              <th className="p-3 border text-left">Team 2</th>
+              <th className="p-3 border text-left">TV Provider</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((item, index) => (
+              <tr key={index}>
+                <td className="p-3 border">{item.date}</td>
+                <td className="p-3 border">{item.time}</td>
+                <td className="p-3 border">{item.team1}</td>
+                <td className="p-3 border">{item.team2}</td>
+                <td className="p-3 border">{item.tvProvider}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
