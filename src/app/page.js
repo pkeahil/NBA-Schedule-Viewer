@@ -7,6 +7,13 @@ import games from './games.json';
 export default function Home() {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState("");
+  const [columnFilters, setColumnFilters] = useState({
+    date: "",
+    time: "",
+    awayTeam: "",
+    homeTeam: "",
+    tvProvider: ""
+  });
 
   useEffect(() => {
     const parsedData = games.map(item => ({
@@ -29,14 +36,24 @@ export default function Home() {
 
   const filteredData = useMemo(() => {
     const searchTerm = filter.toLowerCase();
-    return data.filter(item => 
-      item.date.toLowerCase().includes(searchTerm) ||
-      item.time.toLowerCase().includes(searchTerm) ||
-      item.awayTeam.toLowerCase().includes(searchTerm) ||
-      item.homeTeam.toLowerCase().includes(searchTerm) ||
-      item.tvProvider.toLowerCase().includes(searchTerm)
-    );
-  }, [data, filter]);
+    return data.filter(item => {
+      const matchesGlobal = !searchTerm || 
+        item.date.toLowerCase().includes(searchTerm) ||
+        item.time.toLowerCase().includes(searchTerm) ||
+        item.awayTeam.toLowerCase().includes(searchTerm) ||
+        item.homeTeam.toLowerCase().includes(searchTerm) ||
+        item.tvProvider.toLowerCase().includes(searchTerm);
+      
+      const matchesColumns = 
+        item.date.toLowerCase().includes(columnFilters.date.toLowerCase()) &&
+        item.time.toLowerCase().includes(columnFilters.time.toLowerCase()) &&
+        item.awayTeam.toLowerCase().includes(columnFilters.awayTeam.toLowerCase()) &&
+        item.homeTeam.toLowerCase().includes(columnFilters.homeTeam.toLowerCase()) &&
+        item.tvProvider.toLowerCase().includes(columnFilters.tvProvider.toLowerCase());
+      
+      return matchesGlobal && matchesColumns;
+    });
+  }, [data, filter, columnFilters]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-black">
@@ -77,11 +94,58 @@ export default function Home() {
             <table className="w-full">
               <thead className="bg-zinc-100 dark:bg-zinc-700">
                 <tr>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Time</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Away Team</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Home Team</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">TV Provider</th>
+                  <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Date</th>
+                  <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Time</th>
+                  <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Away Team</th>
+                  <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Home Team</th>
+                  <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">TV Provider</th>
+                </tr>
+                <tr className="bg-zinc-50 dark:bg-zinc-700">
+                  <th className="px-6 pb-3">
+                    <input
+                      type="text"
+                      className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
+                      placeholder="Filter..."
+                      value={columnFilters.date}
+                      onChange={(e) => setColumnFilters(prev => ({...prev, date: e.target.value}))}
+                    />
+                  </th>
+                  <th className="px-6 pb-3">
+                    <input
+                      type="text"
+                      className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
+                      placeholder="Filter..."
+                      value={columnFilters.time}
+                      onChange={(e) => setColumnFilters(prev => ({...prev, time: e.target.value}))}
+                    />
+                  </th>
+                  <th className="px-6 pb-3">
+                    <input
+                      type="text"
+                      className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
+                      placeholder="Filter..."
+                      value={columnFilters.awayTeam}
+                      onChange={(e) => setColumnFilters(prev => ({...prev, awayTeam: e.target.value}))}
+                    />
+                  </th>
+                  <th className="px-6 pb-3">
+                    <input
+                      type="text"
+                      className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
+                      placeholder="Filter..."
+                      value={columnFilters.homeTeam}
+                      onChange={(e) => setColumnFilters(prev => ({...prev, homeTeam: e.target.value}))}
+                    />
+                  </th>
+                  <th className="px-6 pb-3">
+                    <input
+                      type="text"
+                      className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
+                      placeholder="Filter..."
+                      value={columnFilters.tvProvider}
+                      onChange={(e) => setColumnFilters(prev => ({...prev, tvProvider: e.target.value}))}
+                    />
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-zinc-700">
