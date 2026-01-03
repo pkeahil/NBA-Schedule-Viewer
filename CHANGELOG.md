@@ -1,2 +1,1 @@
-- [x] Update link to app in README (updated link: https://nbaschd.vercel.app/)
-- [x] Add ability to have multiple filters (e.g. x AND y, a OR b)
+
