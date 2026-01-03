@@ -1,6 +1,6 @@
 # NBA National TV Schedule Viewer
 
-Just wanted to create a one-stop shop for viewing the schedule of National TV NBA Games. Try it out! &rarr; https://nba-schedule-viewer.vercel.app/
+Just wanted to create a one-stop shop for viewing the schedule of National TV NBA Games. Try it out! &rarr; https://nbaschd.vercel.app/
 
 When looking through the schedule on nba.com, I noticed that there's no way to filter by TV provider, or even to easily filter by the date of games (for example, to view a game one month in the future, it requires 3 clicks, and on top of that, that only gives you one day's worth of games).
 

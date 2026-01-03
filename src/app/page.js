@@ -14,6 +14,7 @@ export default function Home() {
     homeTeam: "",
     tvProvider: ""
   });
+  const [showOnlyFuture, setShowOnlyFuture] = useState(false);
 
   useEffect(() => {
     const parsedData = games.map(item => ({
@@ -35,25 +36,54 @@ export default function Home() {
   }, []);
 
   const filteredData = useMemo(() => {
-    const searchTerm = filter.toLowerCase();
+    const now = new Date();
+    
     return data.filter(item => {
-      const matchesGlobal = !searchTerm || 
-        item.date.toLowerCase().includes(searchTerm) ||
-        item.time.toLowerCase().includes(searchTerm) ||
-        item.awayTeam.toLowerCase().includes(searchTerm) ||
-        item.homeTeam.toLowerCase().includes(searchTerm) ||
-        item.tvProvider.toLowerCase().includes(searchTerm);
+      const matchesGlobal = !filter || (() => {
+        const searchTerms = filter.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
+        return searchTerms.some(term =>
+          item.date.toLowerCase().includes(term) ||
+          item.time.toLowerCase().includes(term) ||
+          item.awayTeam.toLowerCase().includes(term) ||
+          item.homeTeam.toLowerCase().includes(term) ||
+          item.tvProvider.toLowerCase().includes(term)
+        );
+      })();
       
       const matchesColumns = 
-        item.date.toLowerCase().includes(columnFilters.date.toLowerCase()) &&
-        item.time.toLowerCase().includes(columnFilters.time.toLowerCase()) &&
-        item.awayTeam.toLowerCase().includes(columnFilters.awayTeam.toLowerCase()) &&
-        item.homeTeam.toLowerCase().includes(columnFilters.homeTeam.toLowerCase()) &&
-        item.tvProvider.toLowerCase().includes(columnFilters.tvProvider.toLowerCase());
+        (!columnFilters.date || (() => {
+          const terms = columnFilters.date.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
+          return terms.some(term => item.date.toLowerCase().includes(term));
+        })()) &&
+        (!columnFilters.time || (() => {
+          const terms = columnFilters.time.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
+          return terms.some(term => item.time.toLowerCase().includes(term));
+        })()) &&
+        (!columnFilters.awayTeam || (() => {
+          const terms = columnFilters.awayTeam.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
+          return terms.some(term => item.awayTeam.toLowerCase().includes(term));
+        })()) &&
+        (!columnFilters.homeTeam || (() => {
+          const terms = columnFilters.homeTeam.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
+          return terms.some(term => item.homeTeam.toLowerCase().includes(term));
+        })()) &&
+        (!columnFilters.tvProvider || (() => {
+          const terms = columnFilters.tvProvider.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
+          return terms.some(term => item.tvProvider.toLowerCase().includes(term));
+        })());
       
-      return matchesGlobal && matchesColumns;
+      const matchesFuture = !showOnlyFuture || (() => {
+        const getYear = (dateStr) => {
+          const month = dateStr.split(' ')[1];
+          return ['January', 'February', 'March', 'April', 'May', 'June'].includes(month) ? 2026 : 2025;
+        };
+        const gameDate = new Date(item.date + ", " + getYear(item.date));
+        return gameDate >= now;
+      })();
+      
+      return matchesGlobal && matchesColumns && matchesFuture;
     });
-  }, [data, filter, columnFilters]);
+  }, [data, filter, columnFilters, showOnlyFuture]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-black">
@@ -65,7 +95,7 @@ export default function Home() {
             NBA National TV Schedule
           </h1>
           <p className="text-zinc-600 dark:text-zinc-400 mb-6">
-            Search by team, date, or TV provider
+            Search by team, date, or TV provider. Use "OR" to search multiple terms (e.g., "Rockets OR Thunder")
           </p>
           
           <div className="relative">
@@ -80,6 +110,18 @@ export default function Home() {
             <svg className="absolute left-3 top-3.5 h-5 w-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
+          </div>
+          
+          <div className="mt-4 flex items-center">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showOnlyFuture}
+                onChange={(e) => setShowOnlyFuture(e.target.checked)}
+                className="w-4 h-4 text-blue-600 bg-zinc-100 border-zinc-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-zinc-800 focus:ring-2 dark:bg-zinc-700 dark:border-zinc-600"
+              />
+              <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300">Show only future games</span>
+            </label>
           </div>
           
           {filteredData.length > 0 && (
@@ -105,7 +147,7 @@ export default function Home() {
                     <input
                       type="text"
                       className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
-                      placeholder="Filter..."
+                      placeholder="Filter... (use OR)"
                       value={columnFilters.date}
                       onChange={(e) => setColumnFilters(prev => ({...prev, date: e.target.value}))}
                     />
