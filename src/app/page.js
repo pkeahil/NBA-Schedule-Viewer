@@ -78,7 +78,9 @@ export default function Home() {
           return ['January', 'February', 'March', 'April', 'May', 'June'].includes(month) ? 2026 : 2025;
         };
         const gameDate = new Date(item.date + ", " + getYear(item.date));
-        return gameDate >= now;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return gameDate >= today;
       })();
       
       return matchesGlobal && matchesColumns && matchesFuture;
@@ -120,7 +122,7 @@ export default function Home() {
                 onChange={(e) => setShowOnlyFuture(e.target.checked)}
                 className="w-4 h-4 text-blue-600 bg-zinc-100 border-zinc-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-zinc-800 focus:ring-2 dark:bg-zinc-700 dark:border-zinc-600"
               />
-              <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300">Show only future games</span>
+              <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300">Show only today's and future games</span>
             </label>
           </div>
           
