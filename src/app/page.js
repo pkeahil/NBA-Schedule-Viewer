@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from "./components/navbar";
+import SearchBar from "./components/SearchBar";
+import GamesTable from "./components/GamesTable";
+import { useGameFilters } from "./hooks/useGameFilters";
 import games from './games.json';
 
 export default function Home() {
@@ -35,189 +38,29 @@ export default function Home() {
     setData(parsedData);
   }, []);
 
-  const filteredData = useMemo(() => {
-    const now = new Date();
-    
-    return data.filter(item => {
-      const matchesGlobal = !filter || (() => {
-        const searchTerms = filter.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
-        return searchTerms.some(term =>
-          item.date.toLowerCase().includes(term) ||
-          item.time.toLowerCase().includes(term) ||
-          item.awayTeam.toLowerCase().includes(term) ||
-          item.homeTeam.toLowerCase().includes(term) ||
-          item.tvProvider.toLowerCase().includes(term)
-        );
-      })();
-      
-      const matchesColumns = 
-        (!columnFilters.date || (() => {
-          const terms = columnFilters.date.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
-          return terms.some(term => item.date.toLowerCase().includes(term));
-        })()) &&
-        (!columnFilters.time || (() => {
-          const terms = columnFilters.time.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
-          return terms.some(term => item.time.toLowerCase().includes(term));
-        })()) &&
-        (!columnFilters.awayTeam || (() => {
-          const terms = columnFilters.awayTeam.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
-          return terms.some(term => item.awayTeam.toLowerCase().includes(term));
-        })()) &&
-        (!columnFilters.homeTeam || (() => {
-          const terms = columnFilters.homeTeam.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
-          return terms.some(term => item.homeTeam.toLowerCase().includes(term));
-        })()) &&
-        (!columnFilters.tvProvider || (() => {
-          const terms = columnFilters.tvProvider.toLowerCase().split(' or ').map(term => term.trim()).filter(term => term);
-          return terms.some(term => item.tvProvider.toLowerCase().includes(term));
-        })());
-      
-      const matchesFuture = !showOnlyFuture || (() => {
-        const getYear = (dateStr) => {
-          const month = dateStr.split(' ')[1];
-          return ['January', 'February', 'March', 'April', 'May', 'June'].includes(month) ? 2026 : 2025;
-        };
-        const gameDate = new Date(item.date + ", " + getYear(item.date));
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        return gameDate >= today;
-      })();
-      
-      return matchesGlobal && matchesColumns && matchesFuture;
-    });
-  }, [data, filter, columnFilters, showOnlyFuture]);
+  const filteredData = useMemo(() => 
+    useGameFilters(data, filter, columnFilters, showOnlyFuture),
+    [data, filter, columnFilters, showOnlyFuture]
+  );
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-black">
       <Navbar />
       
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg p-6 mb-8">
-          <h1 className="text-3xl font-bold text-zinc-800 dark:text-white mb-2">
-            NBA National TV Schedule
-          </h1>
-          <p className="text-zinc-600 dark:text-zinc-400 mb-6">
-            Search by team, date, or TV provider. Use "OR" to search multiple terms (e.g., "Rockets OR Thunder")
-          </p>
-          
-          <div className="relative">
-            <input
-              type="search"
-              className="w-full px-4 py-3 pl-11 text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              placeholder="Search games..."
-              aria-label="Search games"
-            />
-            <svg className="absolute left-3 top-3.5 h-5 w-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-          
-          <div className="mt-4 flex items-center">
-            <label className="flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={showOnlyFuture}
-                onChange={(e) => setShowOnlyFuture(e.target.checked)}
-                className="w-4 h-4 text-blue-600 bg-zinc-100 border-zinc-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-zinc-800 focus:ring-2 dark:bg-zinc-700 dark:border-zinc-600"
-              />
-              <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300">Show only today's and future games</span>
-            </label>
-          </div>
-          
-          {filteredData.length > 0 && (
-            <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
-              Showing {filteredData.length} game{filteredData.length !== 1 ? 's' : ''}
-            </p>
-          )}
-        </div>
+        <SearchBar 
+          filter={filter}
+          setFilter={setFilter}
+          showOnlyFuture={showOnlyFuture}
+          setShowOnlyFuture={setShowOnlyFuture}
+          resultCount={filteredData.length}
+        />
 
-        <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-zinc-100 dark:bg-zinc-700">
-                <tr>
-                  <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Date</th>
-                  <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Time</th>
-                  <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Away Team</th>
-                  <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Home Team</th>
-                  <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">TV Provider</th>
-                </tr>
-                <tr className="bg-zinc-50 dark:bg-zinc-700">
-                  <th className="px-6 pb-3">
-                    <input
-                      type="text"
-                      className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
-                      placeholder="Filter... (use OR)"
-                      value={columnFilters.date}
-                      onChange={(e) => setColumnFilters(prev => ({...prev, date: e.target.value}))}
-                    />
-                  </th>
-                  <th className="px-6 pb-3">
-                    <input
-                      type="text"
-                      className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
-                      placeholder="Filter..."
-                      value={columnFilters.time}
-                      onChange={(e) => setColumnFilters(prev => ({...prev, time: e.target.value}))}
-                    />
-                  </th>
-                  <th className="px-6 pb-3">
-                    <input
-                      type="text"
-                      className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
-                      placeholder="Filter..."
-                      value={columnFilters.awayTeam}
-                      onChange={(e) => setColumnFilters(prev => ({...prev, awayTeam: e.target.value}))}
-                    />
-                  </th>
-                  <th className="px-6 pb-3">
-                    <input
-                      type="text"
-                      className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
-                      placeholder="Filter..."
-                      value={columnFilters.homeTeam}
-                      onChange={(e) => setColumnFilters(prev => ({...prev, homeTeam: e.target.value}))}
-                    />
-                  </th>
-                  <th className="px-6 pb-3">
-                    <input
-                      type="text"
-                      className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
-                      placeholder="Filter..."
-                      value={columnFilters.tvProvider}
-                      onChange={(e) => setColumnFilters(prev => ({...prev, tvProvider: e.target.value}))}
-                    />
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-700">
-                {filteredData.length > 0 ? (
-                  filteredData.map((item, index) => (
-                    <tr key={index} className="hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">{item.date}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">{item.time}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-zinc-100">{item.awayTeam}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-zinc-100">{item.homeTeam}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                          {item.tvProvider}
-                        </span>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="px-6 py-12 text-center text-zinc-500 dark:text-zinc-400">
-                      No games found matching your search
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <GamesTable 
+          data={filteredData}
+          columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
+        />
       </main>
     </div>
   );
