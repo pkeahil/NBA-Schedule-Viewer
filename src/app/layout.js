@@ -12,8 +12,21 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "NBA National TV Schedule",
-  description: "View NBA games by TV provider",
+  title: "NBA National TV Schedule Viewer | Filter Games by TV Provider",
+  description: "Find NBA games on your TV provider. Filter by ESPN, TNT, ABC, NBC, Prime Video and more. View today's games and upcoming national TV schedule.",
+  keywords: "NBA schedule, NBA TV, ESPN, TNT, ABC, NBC, Prime Video, basketball games, national TV games",
+  authors: [{ name: "NBA Schedule Viewer" }],
+  creator: "NBA Schedule Viewer",
+  publisher: "NBA Schedule Viewer",
+  robots: "index, follow",
+  openGraph: {
+    title: "NBA National TV Schedule Viewer",
+    description: "Find NBA games on your TV provider. Filter by ESPN, TNT, ABC, NBC, Prime Video and more.",
+    url: "https://nbaschd.vercel.app",
+    siteName: "NBA Schedule Viewer",
+    type: "website",
+    locale: "en_US",
+  },
   icons: {
     icon: '/basketball.svg',
     shortcut: '/basketball.svg',

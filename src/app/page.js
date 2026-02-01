@@ -59,8 +59,22 @@ export default function Home() {
     [data, filter, columnFilters, showOnlyFuture]
   );
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "NBA National TV Schedule Viewer",
+    "description": "Find NBA games on your TV provider. Filter by ESPN, TNT, ABC, NBC, Prime Video and more.",
+    "url": "https://nbaschd.vercel.app",
+    "applicationCategory": "SportsApplication",
+    "operatingSystem": "Web Browser"
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-black">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <Navbar />
       
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
