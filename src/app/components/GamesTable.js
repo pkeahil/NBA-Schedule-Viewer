@@ -1,4 +1,18 @@
+import SearchableDropdown from './SearchableDropdown';
+
 export default function GamesTable({ data, columnFilters, setColumnFilters }) {
+  // Extract unique values for dropdowns
+  const uniqueTeams = [...new Set([
+    ...data.map(item => item.awayTeam),
+    ...data.map(item => item.homeTeam)
+  ])].sort();
+
+  const uniqueProviders = [...new Set(
+    data.flatMap(item => 
+      item.tvProvider.split(', ').map(provider => provider.trim())
+    )
+  )].sort();
+
   return (
     <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg overflow-hidden">
       <div className="overflow-x-auto">
@@ -31,30 +45,27 @@ export default function GamesTable({ data, columnFilters, setColumnFilters }) {
                 />
               </th>
               <th className="px-6 pb-3">
-                <input
-                  type="text"
-                  className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
-                  placeholder="Filter..."
+                <SearchableDropdown
+                  options={uniqueTeams}
                   value={columnFilters.awayTeam}
-                  onChange={(e) => setColumnFilters(prev => ({...prev, awayTeam: e.target.value}))}
+                  onChange={(value) => setColumnFilters(prev => ({...prev, awayTeam: value}))}
+                  placeholder="Filter..."
                 />
               </th>
               <th className="px-6 pb-3">
-                <input
-                  type="text"
-                  className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
-                  placeholder="Filter..."
+                <SearchableDropdown
+                  options={uniqueTeams}
                   value={columnFilters.homeTeam}
-                  onChange={(e) => setColumnFilters(prev => ({...prev, homeTeam: e.target.value}))}
+                  onChange={(value) => setColumnFilters(prev => ({...prev, homeTeam: value}))}
+                  placeholder="Filter..."
                 />
               </th>
               <th className="px-6 pb-3">
-                <input
-                  type="text"
-                  className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded"
-                  placeholder="Filter..."
+                <SearchableDropdown
+                  options={uniqueProviders}
                   value={columnFilters.tvProvider}
-                  onChange={(e) => setColumnFilters(prev => ({...prev, tvProvider: e.target.value}))}
+                  onChange={(value) => setColumnFilters(prev => ({...prev, tvProvider: value}))}
+                  placeholder="Filter..."
                 />
               </th>
             </tr>
