@@ -13,6 +13,17 @@ export default function TodaysBanner({ games }) {
     const today = new Date();
     
     return gameDate.toDateString() === today.toDateString();
+  }).sort((a, b) => {
+    const parseTime = (timeStr) => {
+      const [time, period] = timeStr.split(' ');
+      const [hours, minutes = '0'] = time.split(':');
+      let hour24 = parseInt(hours);
+      if (period === 'p.m.' && hour24 !== 12) hour24 += 12;
+      if (period === 'a.m.' && hour24 === 12) hour24 = 0;
+      return hour24 * 60 + parseInt(minutes);
+    };
+    
+    return parseTime(a.time) - parseTime(b.time);
   });
 
   if (todaysGames.length === 0) {

@@ -34,7 +34,22 @@ export default function Home() {
       };
       const dateA = new Date(a.date + ", " + getYear(a.date));
       const dateB = new Date(b.date + ", " + getYear(b.date));
-      return dateA - dateB;
+      
+      if (dateA.getTime() !== dateB.getTime()) {
+        return dateA - dateB;
+      }
+      
+      // Same date, sort by time
+      const parseTime = (timeStr) => {
+        const [time, period] = timeStr.split(' ');
+        const [hours, minutes = '0'] = time.split(':');
+        let hour24 = parseInt(hours);
+        if (period === 'p.m.' && hour24 !== 12) hour24 += 12;
+        if (period === 'a.m.' && hour24 === 12) hour24 = 0;
+        return hour24 * 60 + parseInt(minutes);
+      };
+      
+      return parseTime(a.time) - parseTime(b.time);
     });
     setData(parsedData);
   }, []);
