@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from "./components/navbar";
 import SearchBar from "./components/SearchBar";
 import GamesTable from "./components/GamesTable";
+import TodaysBanner from "./components/TodaysBanner";
 import { useGameFilters } from "./hooks/useGameFilters";
 import games from './games.json';
 
@@ -48,6 +49,8 @@ export default function Home() {
       <Navbar />
       
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <TodaysBanner games={data} />
+        
         <SearchBar 
           filter={filter}
           setFilter={setFilter}
