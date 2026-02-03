@@ -413,7 +413,7 @@
         "tv_providers": "NBC, Peacock"
     },
     {
-        "date": "Monday, February 2",
+        "date": "Tuesday, February 3",
         "away_team_name": "Phoenix Suns",
         "home_team_name": "Portland Trail Blazers",
         "time": "11 p.m.",
@@ -974,8 +974,8 @@
     },
     {
         "date": "Thursday, February 5",
-        "away_team_name": "Philadelphia 76ers",
-        "home_team_name": "Los Angeles Lakers",
+        "away_team_name": "Golden State Warriors",
+        "home_team_name": "Philadelphia 76ers",
         "time": "10:00 p.m.",
         "tv_providers": "Prime Video"
     },
