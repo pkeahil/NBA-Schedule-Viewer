@@ -1,0 +1,310 @@
+[
+  {
+    "date": "Tuesday, February 3",
+    "away_team_name": "Boston Celtics",
+    "home_team_name": "Dallas Mavericks",
+    "time": "7:00 PM CT",
+    "tv_providers": "Peacock, NBC"
+  },
+  {
+    "date": "Tuesday, February 3",
+    "away_team_name": "Phoenix Suns",
+    "home_team_name": "Portland Trail Blazers",
+    "time": "10:00 PM CT",
+    "tv_providers": "Peacock"
+  },
+  {
+    "date": "Wednesday, February 4",
+    "away_team_name": "Denver Nuggets",
+    "home_team_name": "New York Knicks",
+    "time": "6:00 PM CT",
+    "tv_providers": "ESPN"
+  },
+  {
+    "date": "Wednesday, February 4",
+    "away_team_name": "Oklahoma City Thunder",
+    "home_team_name": "San Antonio Spurs",
+    "time": "8:30 PM CT",
+    "tv_providers": "ESPN"
+  },
+  {
+    "date": "Thursday, February 5",
+    "away_team_name": "Chicago Bulls",
+    "home_team_name": "Toronto Raptors",
+    "time": "6:30 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Thursday, February 5",
+    "away_team_name": "Golden State Warriors",
+    "home_team_name": "Phoenix Suns",
+    "time": "9:00 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Friday, February 6",
+    "away_team_name": "New York Knicks",
+    "home_team_name": "Detroit Pistons",
+    "time": "6:30 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Friday, February 6",
+    "away_team_name": "LA Clippers",
+    "home_team_name": "Sacramento Kings",
+    "time": "9:00 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Saturday, February 7",
+    "away_team_name": "Houston Rockets",
+    "home_team_name": "Oklahoma City Thunder",
+    "time": "2:30 PM CT",
+    "tv_providers": "ABC"
+  },
+  {
+    "date": "Saturday, February 7",
+    "away_team_name": "Dallas Mavericks",
+    "home_team_name": "San Antonio Spurs",
+    "time": "5:00 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Saturday, February 7",
+    "away_team_name": "Golden State Warriors",
+    "home_team_name": "Los Angeles Lakers",
+    "time": "7:30 PM CT",
+    "tv_providers": "ABC"
+  },
+  {
+    "date": "Sunday, February 8",
+    "away_team_name": "New York Knicks",
+    "home_team_name": "Boston Celtics",
+    "time": "11:30 AM CT",
+    "tv_providers": "ABC"
+  },
+  {
+    "date": "Sunday, February 8",
+    "away_team_name": "LA Clippers",
+    "home_team_name": "Minnesota Timberwolves",
+    "time": "2:00 PM CT",
+    "tv_providers": "ESPN"
+  },
+  {
+    "date": "Monday, February 9",
+    "away_team_name": "Milwaukee Bucks",
+    "home_team_name": "Orlando Magic",
+    "time": "6:30 PM CT",
+    "tv_providers": "Peacock"
+  },
+  {
+    "date": "Monday, February 9",
+    "away_team_name": "Oklahoma City Thunder",
+    "home_team_name": "Los Angeles Lakers",
+    "time": "9:00 PM CT",
+    "tv_providers": "Peacock"
+  },
+  {
+    "date": "Wednesday, February 11",
+    "away_team_name": "New York Knicks",
+    "home_team_name": "Philadelphia 76ers",
+    "time": "6:30 PM CT",
+    "tv_providers": "ESPN"
+  },
+  {
+    "date": "Wednesday, February 11",
+    "away_team_name": "San Antonio Spurs",
+    "home_team_name": "Golden State Warriors",
+    "time": "9:00 PM CT",
+    "tv_providers": "ESPN"
+  },
+  {
+    "date": "Thursday, February 12",
+    "away_team_name": "Milwaukee Bucks",
+    "home_team_name": "Oklahoma City Thunder",
+    "time": "6:30 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Thursday, February 12",
+    "away_team_name": "Dallas Mavericks",
+    "home_team_name": "Los Angeles Lakers",
+    "time": "9:00 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Friday, February 13",
+    "time": "8:00 PM CT",
+    "tv_providers": "Peacock"
+  },
+  {
+    "date": "Friday, February 13",
+    "time": "9:35 PM CT",
+    "tv_providers": "Peacock"
+  },
+  {
+    "date": "Friday, February 13",
+    "time": "8:55 PM CT",
+    "tv_providers": "Peacock"
+  },
+  {
+    "date": "Sunday, February 15",
+    "time": "TBD",
+    "tv_providers": "Peacock, NBC"
+  },
+  {
+    "date": "Sunday, February 15",
+    "time": "TBD",
+    "tv_providers": "Peacock, NBC"
+  },
+  {
+    "date": "Sunday, February 15",
+    "time": "TBD",
+    "tv_providers": "Peacock, NBC"
+  },
+  {
+    "date": "Sunday, February 15",
+    "time": "TBD",
+    "tv_providers": "Peacock, NBC"
+  },
+  {
+    "date": "Thursday, February 19",
+    "away_team_name": "Detroit Pistons",
+    "home_team_name": "New York Knicks",
+    "time": "6:30 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Thursday, February 19",
+    "away_team_name": "Boston Celtics",
+    "home_team_name": "Golden State Warriors",
+    "time": "9:00 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Friday, February 20",
+    "away_team_name": "Dallas Mavericks",
+    "home_team_name": "Minnesota Timberwolves",
+    "time": "6:30 PM CT",
+    "tv_providers": "ESPN"
+  },
+  {
+    "date": "Friday, February 20",
+    "away_team_name": "LA Clippers",
+    "home_team_name": "Los Angeles Lakers",
+    "time": "9:00 PM CT",
+    "tv_providers": "ESPN"
+  },
+  {
+    "date": "Saturday, February 21",
+    "away_team_name": "Houston Rockets",
+    "home_team_name": "New York Knicks",
+    "time": "7:30 PM CT",
+    "tv_providers": "ABC"
+  },
+  {
+    "date": "Sunday, February 22",
+    "away_team_name": "Cleveland Cavaliers",
+    "home_team_name": "Oklahoma City Thunder",
+    "time": "12:00 PM CT",
+    "tv_providers": "ABC"
+  },
+  {
+    "date": "Sunday, February 22",
+    "away_team_name": "Denver Nuggets",
+    "home_team_name": "Golden State Warriors",
+    "time": "2:30 PM CT",
+    "tv_providers": "ABC"
+  },
+  {
+    "date": "Sunday, February 22",
+    "away_team_name": "Boston Celtics",
+    "home_team_name": "Los Angeles Lakers",
+    "time": "5:30 PM CT",
+    "tv_providers": "Peacock, NBC"
+  },
+  {
+    "date": "Monday, February 23",
+    "away_team_name": "San Antonio Spurs",
+    "home_team_name": "Detroit Pistons",
+    "time": "6:00 PM CT",
+    "tv_providers": "Peacock"
+  },
+  {
+    "date": "Monday, February 23",
+    "away_team_name": "Utah Jazz",
+    "home_team_name": "Houston Rockets",
+    "time": "8:30 PM CT",
+    "tv_providers": "Peacock"
+  },
+  {
+    "date": "Tuesday, February 24",
+    "away_team_name": "New York Knicks",
+    "home_team_name": "Cleveland Cavaliers",
+    "time": "6:30 PM CT",
+    "tv_providers": "Peacock"
+  },
+  {
+    "date": "Tuesday, February 24",
+    "away_team_name": "Minnesota Timberwolves",
+    "home_team_name": "Portland Trail Blazers",
+    "time": "9:00 PM CT",
+    "tv_providers": "Peacock"
+  },
+  {
+    "date": "Wednesday, February 25",
+    "away_team_name": "Golden State Warriors",
+    "home_team_name": "Memphis Grizzlies",
+    "time": "6:30 PM CT",
+    "tv_providers": "ESPN"
+  },
+  {
+    "date": "Wednesday, February 25",
+    "away_team_name": "Boston Celtics",
+    "home_team_name": "Denver Nuggets",
+    "time": "9:00 PM CT",
+    "tv_providers": "ESPN"
+  },
+  {
+    "date": "Thursday, February 26",
+    "away_team_name": "Houston Rockets",
+    "home_team_name": "Orlando Magic",
+    "time": "6:30 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Thursday, February 26",
+    "away_team_name": "Minnesota Timberwolves",
+    "home_team_name": "LA Clippers",
+    "time": "9:00 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Friday, February 27",
+    "away_team_name": "Cleveland Cavaliers",
+    "home_team_name": "Detroit Pistons",
+    "time": "6:00 PM CT",
+    "tv_providers": "ESPN"
+  },
+  {
+    "date": "Friday, February 27",
+    "away_team_name": "Denver Nuggets",
+    "home_team_name": "Oklahoma City Thunder",
+    "time": "8:30 PM CT",
+    "tv_providers": "ESPN"
+  },
+  {
+    "date": "Saturday, February 28",
+    "away_team_name": "Houston Rockets",
+    "home_team_name": "Miami Heat",
+    "time": "2:00 PM CT",
+    "tv_providers": "Prime Video"
+  },
+  {
+    "date": "Saturday, February 28",
+    "away_team_name": "Los Angeles Lakers",
+    "home_team_name": "Golden State Warriors",
+    "time": "7:30 PM CT",
+    "tv_providers": "ABC"
+  }
+]
