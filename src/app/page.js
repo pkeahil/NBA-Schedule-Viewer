@@ -85,7 +85,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-black">
+    <div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-900">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

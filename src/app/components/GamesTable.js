@@ -23,7 +23,7 @@ export default function GamesTable({ data, columnFilters, setColumnFilters }) {
   );
 
   return (
-    <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg overflow-hidden">
+    <div className="bg-white dark:bg-zinc-800 rounded-xl shadow overflow-hidden">
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
@@ -95,7 +95,7 @@ export default function GamesTable({ data, columnFilters, setColumnFilters }) {
               data.map((item, index) => {
                 const providers = item.tvProvider.split(', ').map(p => p.trim());
                 return (
-                  <tr key={index} className="hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-colors">
+                  <tr key={index} className="hover:bg-zinc-50 dark:hover:bg-zinc-700/50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">{item.date}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">{item.time} ET</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-zinc-100">{item.awayTeam}</td>

@@ -16,7 +16,7 @@ export default function SearchBar({ filter, setFilter, showOnlyFuture, setShowOn
   };
 
   return (
-    <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg p-6 mb-8">
+    <div className="bg-white dark:bg-zinc-800 rounded-xl shadow p-6 mb-8">
       <h1 className="text-3xl font-bold text-zinc-800 dark:text-white mb-2">
         NBA National TV Schedule
       </h1>
