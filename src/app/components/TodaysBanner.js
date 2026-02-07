@@ -27,7 +27,16 @@ export default function TodaysBanner({ games }) {
   });
 
   if (todaysGames.length === 0) {
-    return null;
+    return (
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          Today's Games
+        </h2>
+        <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md border border-gray-200 dark:border-zinc-700 p-6 text-center">
+          <p className="text-gray-500 dark:text-gray-400">No games scheduled for today</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -38,14 +47,16 @@ export default function TodaysBanner({ games }) {
       
       <div className="overflow-x-auto">
         <div className="flex gap-4 pb-4" style={{ minWidth: 'max-content' }}>
-          {todaysGames.map((game, index) => (
+          {todaysGames.map((game, index) => {
+            const providers = game.tvProvider.split(', ').map(p => p.trim());
+            return (
             <div
               key={index}
               className="flex-shrink-0 bg-white dark:bg-zinc-800 rounded-lg shadow-md border border-gray-200 dark:border-zinc-700 p-4 min-w-[280px]"
             >
               <div className="text-center">
                 <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                  {game.time}
+                  {game.time} ET
                 </div>
                 
                 <div className="flex items-center justify-between mb-3">
@@ -66,12 +77,16 @@ export default function TodaysBanner({ games }) {
                   </div>
                 </div>
                 
-                <div className="text-xs text-blue-600 dark:text-blue-400 font-medium bg-blue-50 dark:bg-blue-900/20 rounded-full px-3 py-1">
-                  {game.tvProvider}
+                <div className="flex flex-wrap gap-1 justify-center">
+                  {providers.map((provider, i) => (
+                    <span key={i} className="text-xs text-blue-600 dark:text-blue-400 font-medium bg-blue-50 dark:bg-blue-900/20 rounded-full px-3 py-1">
+                      {provider}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
-          ))}
+          )})}
         </div>
       </div>
     </div>

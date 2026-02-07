@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
-import Navbar from "./components/navbar";
 import SearchBar from "./components/SearchBar";
 import GamesTable from "./components/GamesTable";
 import TodaysBanner from "./components/TodaysBanner";
@@ -10,6 +9,7 @@ import games from './games.json';
 
 export default function Home() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
   const [columnFilters, setColumnFilters] = useState({
     date: "",
@@ -52,12 +52,27 @@ export default function Home() {
       return parseTime(a.time) - parseTime(b.time);
     });
     setData(parsedData);
+    setLoading(false);
   }, []);
 
   const filteredData = useMemo(() => 
     useGameFilters(data, filter, columnFilters, showOnlyFuture),
     [data, filter, columnFilters, showOnlyFuture]
   );
+
+  const handleClearFilters = (key) => {
+    if (key === 'all') {
+      setColumnFilters({
+        date: "",
+        time: "",
+        awayTeam: "",
+        homeTeam: "",
+        tvProvider: ""
+      });
+    } else {
+      setColumnFilters(prev => ({ ...prev, [key]: "" }));
+    }
+  };
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -75,24 +90,44 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <Navbar />
       
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <TodaysBanner games={data} />
-        
-        <SearchBar 
-          filter={filter}
-          setFilter={setFilter}
-          showOnlyFuture={showOnlyFuture}
-          setShowOnlyFuture={setShowOnlyFuture}
-          resultCount={filteredData.length}
-        />
+        {loading ? (
+          <div className="space-y-8">
+            <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg p-6 animate-pulse">
+              <div className="h-8 bg-zinc-200 dark:bg-zinc-700 rounded w-1/3 mb-4"></div>
+              <div className="h-4 bg-zinc-200 dark:bg-zinc-700 rounded w-2/3 mb-6"></div>
+              <div className="h-12 bg-zinc-200 dark:bg-zinc-700 rounded"></div>
+            </div>
+            <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg p-6 animate-pulse">
+              <div className="space-y-4">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="h-16 bg-zinc-200 dark:bg-zinc-700 rounded"></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <TodaysBanner games={data} />
+            
+            <SearchBar 
+              filter={filter}
+              setFilter={setFilter}
+              showOnlyFuture={showOnlyFuture}
+              setShowOnlyFuture={setShowOnlyFuture}
+              resultCount={filteredData.length}
+              columnFilters={columnFilters}
+              onClearFilters={handleClearFilters}
+            />
 
-        <GamesTable 
-          data={filteredData}
-          columnFilters={columnFilters}
-          setColumnFilters={setColumnFilters}
-        />
+            <GamesTable 
+              data={filteredData}
+              columnFilters={columnFilters}
+              setColumnFilters={setColumnFilters}
+            />
+          </>
+        )}
       </main>
     </div>
   );

@@ -1,4 +1,20 @@
-export default function SearchBar({ filter, setFilter, showOnlyFuture, setShowOnlyFuture, resultCount }) {
+export default function SearchBar({ filter, setFilter, showOnlyFuture, setShowOnlyFuture, resultCount, columnFilters, onClearFilters }) {
+  const activeFilters = [];
+  if (filter) activeFilters.push({ label: `Search: ${filter}`, key: 'global' });
+  if (columnFilters?.date) activeFilters.push({ label: `Date: ${columnFilters.date}`, key: 'date' });
+  if (columnFilters?.time) activeFilters.push({ label: `Time: ${columnFilters.time}`, key: 'time' });
+  if (columnFilters?.awayTeam) activeFilters.push({ label: `Away: ${columnFilters.awayTeam}`, key: 'awayTeam' });
+  if (columnFilters?.homeTeam) activeFilters.push({ label: `Home: ${columnFilters.homeTeam}`, key: 'homeTeam' });
+  if (columnFilters?.tvProvider) activeFilters.push({ label: `TV: ${columnFilters.tvProvider}`, key: 'tvProvider' });
+
+  const removeFilter = (key) => {
+    if (key === 'global') {
+      setFilter('');
+    } else if (onClearFilters) {
+      onClearFilters(key);
+    }
+  };
+
   return (
     <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg p-6 mb-8">
       <h1 className="text-3xl font-bold text-zinc-800 dark:text-white mb-2">
@@ -22,7 +38,7 @@ export default function SearchBar({ filter, setFilter, showOnlyFuture, setShowOn
         </svg>
       </div>
       
-      <div className="mt-4 flex items-center">
+      <div className="mt-4 flex items-center justify-between">
         <label className="flex items-center cursor-pointer">
           <input
             type="checkbox"
@@ -32,7 +48,39 @@ export default function SearchBar({ filter, setFilter, showOnlyFuture, setShowOn
           />
           <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300">Show only future games</span>
         </label>
+        
+        {activeFilters.length > 0 && (
+          <button
+            onClick={() => {
+              setFilter('');
+              if (onClearFilters) onClearFilters('all');
+            }}
+            className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            Clear all filters
+          </button>
+        )}
       </div>
+
+      {activeFilters.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {activeFilters.map((f) => (
+            <span
+              key={f.key}
+              className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-sm rounded-full"
+            >
+              {f.label}
+              <button
+                onClick={() => removeFilter(f.key)}
+                className="hover:text-blue-600 dark:hover:text-blue-400"
+                aria-label={`Remove ${f.label} filter`}
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
       
       {resultCount > 0 && (
         <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
