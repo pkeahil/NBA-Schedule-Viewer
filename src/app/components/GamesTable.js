@@ -163,11 +163,11 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, show
               return (
                 <div key={index} className="bg-zinc-50 dark:bg-zinc-700 rounded-lg p-4">
                   <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center mb-2">
-                    <div className="flex items-center gap-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 justify-end">
+                    <div className="flex items-center gap-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 justify-end text-right">
                       {awayTeam.logo && (
                         <img src={awayTeam.logo} alt={item.awayTeam} className="w-6 h-6" />
                       )}
-                      {item.awayTeam}
+                      <span>{item.awayTeam}</span>
                     </div>
                     <span className="text-xs text-zinc-500">@</span>
                     <div className="flex items-center gap-2 text-sm font-medium text-zinc-900 dark:text-zinc-100">
