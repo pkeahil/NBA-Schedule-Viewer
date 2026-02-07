@@ -167,14 +167,14 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, show
                       {awayTeam.logo && (
                         <img src={awayTeam.logo} alt={item.awayTeam} className="w-6 h-6 flex-shrink-0" />
                       )}
-                      <span className="whitespace-nowrap">{item.awayTeam}</span>
+                      <span className="text-right">{item.awayTeam}</span>
                     </div>
                     <span className="text-xs text-zinc-500 flex-shrink-0">@</span>
                     <div className="flex items-center gap-2 text-sm font-medium text-zinc-900 dark:text-zinc-100">
                       {homeTeam.logo && (
                         <img src={homeTeam.logo} alt={item.homeTeam} className="w-6 h-6 flex-shrink-0" />
                       )}
-                      <span className="whitespace-nowrap">{item.homeTeam}</span>
+                      <span>{item.homeTeam}</span>
                     </div>
                   </div>
                   <div className="text-center text-xs text-zinc-600 dark:text-zinc-400 mb-2">
