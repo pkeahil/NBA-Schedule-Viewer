@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
-import SearchBar from "./components/SearchBar";
+import SearchNavbar from "./components/SearchNavbar";
 import GamesTable from "./components/GamesTable";
 import TodaysBanner from "./components/TodaysBanner";
 import { useGameFilters } from "./hooks/useGameFilters";
@@ -91,15 +91,23 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       
+      <SearchNavbar 
+        filter={filter}
+        setFilter={setFilter}
+        resultCount={filteredData.length}
+        columnFilters={columnFilters}
+        onClearFilters={handleClearFilters}
+      />
+      
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
           <div className="space-y-8">
-            <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg p-6 animate-pulse">
+            <div className="bg-white dark:bg-zinc-800 rounded-xl shadow p-6 animate-pulse">
               <div className="h-8 bg-zinc-200 dark:bg-zinc-700 rounded w-1/3 mb-4"></div>
               <div className="h-4 bg-zinc-200 dark:bg-zinc-700 rounded w-2/3 mb-6"></div>
               <div className="h-12 bg-zinc-200 dark:bg-zinc-700 rounded"></div>
             </div>
-            <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg p-6 animate-pulse">
+            <div className="bg-white dark:bg-zinc-800 rounded-xl shadow p-6 animate-pulse">
               <div className="space-y-4">
                 {[...Array(5)].map((_, i) => (
                   <div key={i} className="h-16 bg-zinc-200 dark:bg-zinc-700 rounded"></div>
@@ -110,21 +118,13 @@ export default function Home() {
         ) : (
           <>
             <TodaysBanner games={data} />
-            
-            <SearchBar 
-              filter={filter}
-              setFilter={setFilter}
-              showOnlyFuture={showOnlyFuture}
-              setShowOnlyFuture={setShowOnlyFuture}
-              resultCount={filteredData.length}
-              columnFilters={columnFilters}
-              onClearFilters={handleClearFilters}
-            />
 
             <GamesTable 
               data={filteredData}
               columnFilters={columnFilters}
               setColumnFilters={setColumnFilters}
+              showOnlyFuture={showOnlyFuture}
+              setShowOnlyFuture={setShowOnlyFuture}
             />
           </>
         )}

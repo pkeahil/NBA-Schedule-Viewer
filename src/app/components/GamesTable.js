@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import SearchableDropdown from './SearchableDropdown';
 
-export default function GamesTable({ data, columnFilters, setColumnFilters }) {
+export default function GamesTable({ data, columnFilters, setColumnFilters, showOnlyFuture, setShowOnlyFuture }) {
   // Memoize unique values - only recalculate when data changes
   const uniqueTeams = useMemo(() => 
     [...new Set([
@@ -24,6 +24,19 @@ export default function GamesTable({ data, columnFilters, setColumnFilters }) {
 
   return (
     <div className="bg-white dark:bg-zinc-800 rounded-xl shadow overflow-hidden">
+      <div className="px-6 py-3 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-zinc-800 dark:text-white">All Games</h2>
+        <label className="flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            checked={showOnlyFuture}
+            onChange={(e) => setShowOnlyFuture(e.target.checked)}
+            className="w-4 h-4 text-blue-600 bg-zinc-100 border-zinc-300 rounded focus:ring-blue-500 dark:bg-zinc-700 dark:border-zinc-600"
+          />
+          <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300">Show only future games</span>
+        </label>
+      </div>
+      
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
@@ -35,9 +48,8 @@ export default function GamesTable({ data, columnFilters, setColumnFilters }) {
               <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Home Team</th>
               <th className="px-6 pt-4 pb-3 text-left text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">TV Provider</th>
             </tr>
-            <tr className="bg-zinc-50 dark:bg-zinc-700 border-t-2 border-zinc-300 dark:border-zinc-600">
-              <th className="px-6 pt-3 pb-3">
-                <div className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Column Filter</div>
+            <tr className="bg-zinc-50 dark:bg-zinc-700">
+              <th className="px-6 pb-3">
                 <input
                   type="text"
                   className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -47,8 +59,7 @@ export default function GamesTable({ data, columnFilters, setColumnFilters }) {
                   aria-label="Filter by date"
                 />
               </th>
-              <th className="px-6 pt-3 pb-3">
-                <div className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Column Filter</div>
+              <th className="px-6 pb-3">
                 <input
                   type="text"
                   className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -58,8 +69,7 @@ export default function GamesTable({ data, columnFilters, setColumnFilters }) {
                   aria-label="Filter by time"
                 />
               </th>
-              <th className="px-6 pt-3 pb-3">
-                <div className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Column Filter</div>
+              <th className="px-6 pb-3">
                 <SearchableDropdown
                   options={uniqueTeams}
                   value={columnFilters.awayTeam}
@@ -68,8 +78,7 @@ export default function GamesTable({ data, columnFilters, setColumnFilters }) {
                   ariaLabel="Filter by away team"
                 />
               </th>
-              <th className="px-6 pt-3 pb-3">
-                <div className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Column Filter</div>
+              <th className="px-6 pb-3">
                 <SearchableDropdown
                   options={uniqueTeams}
                   value={columnFilters.homeTeam}
@@ -78,8 +87,7 @@ export default function GamesTable({ data, columnFilters, setColumnFilters }) {
                   ariaLabel="Filter by home team"
                 />
               </th>
-              <th className="px-6 pt-3 pb-3">
-                <div className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Column Filter</div>
+              <th className="px-6 pb-3">
                 <SearchableDropdown
                   options={uniqueProviders}
                   value={columnFilters.tvProvider}

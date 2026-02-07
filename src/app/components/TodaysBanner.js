@@ -52,28 +52,20 @@ export default function TodaysBanner({ games }) {
             return (
             <div
               key={index}
-              className="flex-shrink-0 bg-white dark:bg-zinc-800 rounded-lg shadow border border-gray-200 dark:border-zinc-700 p-4 min-w-[280px]"
+              className="flex-shrink-0 bg-white dark:bg-zinc-800 rounded-lg shadow border border-gray-200 dark:border-zinc-700 p-4 min-w-[240px]"
             >
               <div className="text-center">
-                <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                <div className="text-xs text-gray-500 dark:text-gray-400 mb-3">
                   {game.time} ET
                 </div>
                 
-                <div className="flex items-center justify-between mb-3">
-                  <div className="text-right flex-1">
-                    <div className="font-semibold text-gray-900 dark:text-white text-sm">
-                      {game.awayTeam}
-                    </div>
+                <div className="space-y-2 mb-3">
+                  <div className="font-semibold text-gray-900 dark:text-white text-sm">
+                    {game.awayTeam}
                   </div>
-                  
-                  <div className="mx-3 text-gray-400 dark:text-gray-500 font-bold">
-                    @
-                  </div>
-                  
-                  <div className="text-left flex-1">
-                    <div className="font-semibold text-gray-900 dark:text-white text-sm">
-                      {game.homeTeam}
-                    </div>
+                  <div className="text-xs text-gray-400 dark:text-gray-500">@</div>
+                  <div className="font-semibold text-gray-900 dark:text-white text-sm">
+                    {game.homeTeam}
                   </div>
                 </div>
                 
