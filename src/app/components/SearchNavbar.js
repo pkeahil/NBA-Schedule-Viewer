@@ -1,3 +1,6 @@
+import { getProviderColor } from '../utils/providerColors';
+import ThemeToggle from './ThemeToggle';
+
 export default function SearchNavbar({ filter, setFilter, resultCount, columnFilters, onClearFilters }) {
   const activeFilters = [];
   if (filter) activeFilters.push({ label: `Search: ${filter}`, key: 'global' });
@@ -19,14 +22,14 @@ export default function SearchNavbar({ filter, setFilter, resultCount, columnFil
     <div className="sticky top-0 z-10 bg-white dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 shadow-sm">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex items-center gap-4">
-          <h1 className="text-xl font-bold text-zinc-800 dark:text-white whitespace-nowrap">
+          <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent whitespace-nowrap">
             NBA Schedule
           </h1>
           
           <div className="flex-1 relative">
             <input
               type="search"
-              className="w-full px-3 py-2 pl-9 text-sm text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 pl-9 text-sm text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               placeholder="Search games..."
@@ -37,13 +40,15 @@ export default function SearchNavbar({ filter, setFilter, resultCount, columnFil
             </svg>
           </div>
 
+          <ThemeToggle />
+
           {activeFilters.length > 0 && (
             <button
               onClick={() => {
                 setFilter('');
                 if (onClearFilters) onClearFilters('all');
               }}
-              className="text-sm text-blue-600 dark:text-blue-400 hover:underline whitespace-nowrap"
+              className="text-sm text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-medium whitespace-nowrap"
             >
               Clear all
             </button>
@@ -55,12 +60,12 @@ export default function SearchNavbar({ filter, setFilter, resultCount, columnFil
             {activeFilters.map((f) => (
               <span
                 key={f.key}
-                className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs rounded-full"
+                className="inline-flex items-center gap-1 px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-200 text-xs rounded-full"
               >
                 {f.label}
                 <button
                   onClick={() => removeFilter(f.key)}
-                  className="hover:text-blue-600 dark:hover:text-blue-400"
+                  className="hover:text-orange-600 dark:hover:text-orange-400"
                   aria-label={`Remove ${f.label} filter`}
                 >
                   ×

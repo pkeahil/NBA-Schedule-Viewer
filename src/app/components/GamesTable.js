@@ -2,6 +2,8 @@
 
 import { useMemo } from 'react';
 import SearchableDropdown from './SearchableDropdown';
+import { getProviderColor } from '../utils/providerColors';
+import { getTeamColors } from '../utils/teamColors';
 
 export default function GamesTable({ data, columnFilters, setColumnFilters, showOnlyFuture, setShowOnlyFuture }) {
   // Memoize unique values - only recalculate when data changes
@@ -26,14 +28,14 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, show
     <div className="bg-white dark:bg-zinc-800 rounded-xl shadow overflow-hidden">
       <div className="px-6 py-3 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-zinc-800 dark:text-white">All Games</h2>
-        <label className="flex items-center cursor-pointer">
+        <label className="flex items-center cursor-pointer group">
           <input
             type="checkbox"
             checked={showOnlyFuture}
             onChange={(e) => setShowOnlyFuture(e.target.checked)}
-            className="w-4 h-4 text-blue-600 bg-zinc-100 border-zinc-300 rounded focus:ring-blue-500 dark:bg-zinc-700 dark:border-zinc-600"
+            className="w-4 h-4 text-orange-600 bg-zinc-100 border-zinc-300 rounded focus:ring-orange-500 dark:bg-zinc-700 dark:border-zinc-600"
           />
-          <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300">Show only future games</span>
+          <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Show only future games</span>
         </label>
       </div>
       
@@ -52,7 +54,7 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, show
               <th className="px-6 pb-3">
                 <input
                   type="text"
-                  className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded focus:ring-2 focus:ring-orange-500 focus:outline-none"
                   placeholder="Filter... (use OR)"
                   value={columnFilters.date}
                   onChange={(e) => setColumnFilters(prev => ({...prev, date: e.target.value}))}
@@ -62,7 +64,7 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, show
               <th className="px-6 pb-3">
                 <input
                   type="text"
-                  className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-2 py-1 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded focus:ring-2 focus:ring-orange-500 focus:outline-none"
                   placeholder="Filter..."
                   value={columnFilters.time}
                   onChange={(e) => setColumnFilters(prev => ({...prev, time: e.target.value}))}
@@ -102,19 +104,38 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, show
             {data.length > 0 ? (
               data.map((item, index) => {
                 const providers = item.tvProvider.split(', ').map(p => p.trim());
+                const awayTeam = getTeamColors(item.awayTeam);
+                const homeTeam = getTeamColors(item.homeTeam);
                 return (
                   <tr key={index} className="hover:bg-zinc-50 dark:hover:bg-zinc-700/50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">{item.date}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">{item.time} ET</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-zinc-100">{item.awayTeam}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-zinc-100">{item.homeTeam}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      <div className="flex items-center gap-2">
+                        {awayTeam.logo && (
+                          <img src={awayTeam.logo} alt={item.awayTeam} className="w-6 h-6" />
+                        )}
+                        {item.awayTeam}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      <div className="flex items-center gap-2">
+                        {homeTeam.logo && (
+                          <img src={homeTeam.logo} alt={item.homeTeam} className="w-6 h-6" />
+                        )}
+                        {item.homeTeam}
+                      </div>
+                    </td>
                     <td className="px-6 py-4 text-sm text-zinc-900 dark:text-zinc-100">
                       <div className="flex flex-wrap gap-1">
-                        {providers.map((provider, i) => (
-                          <span key={i} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                            {provider}
-                          </span>
-                        ))}
+                        {providers.map((provider, i) => {
+                          const colors = getProviderColor(provider);
+                          return (
+                            <span key={i} className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors.bg} ${colors.text}`}>
+                              {provider}
+                            </span>
+                          );
+                        })}
                       </div>
                     </td>
                   </tr>
@@ -137,21 +158,37 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, show
           <div className="p-4 space-y-2">
             {data.map((item, index) => {
               const providers = item.tvProvider.split(', ').map(p => p.trim());
+              const awayTeam = getTeamColors(item.awayTeam);
+              const homeTeam = getTeamColors(item.homeTeam);
               return (
                 <div key={index} className="bg-zinc-50 dark:bg-zinc-700 rounded-lg p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{item.awayTeam} @ {item.homeTeam}</div>
+                  <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center mb-2">
+                    <div className="flex items-center gap-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 justify-end">
+                      {awayTeam.logo && (
+                        <img src={awayTeam.logo} alt={item.awayTeam} className="w-6 h-6" />
+                      )}
+                      {item.awayTeam}
+                    </div>
+                    <span className="text-xs text-zinc-500">@</span>
+                    <div className="flex items-center gap-2 text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      {homeTeam.logo && (
+                        <img src={homeTeam.logo} alt={item.homeTeam} className="w-6 h-6" />
+                      )}
+                      {item.homeTeam}
+                    </div>
                   </div>
-                  <div className="flex justify-between text-xs text-zinc-600 dark:text-zinc-400 mb-2">
-                    <span>{item.date}</span>
-                    <span>{item.time} ET</span>
+                  <div className="text-center text-xs text-zinc-600 dark:text-zinc-400 mb-2">
+                    {item.date} • {item.time} ET
                   </div>
-                  <div className="flex flex-wrap gap-1">
-                    {providers.map((provider, i) => (
-                      <span key={i} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                        {provider}
-                      </span>
-                    ))}
+                  <div className="flex flex-wrap gap-1 justify-center">
+                    {providers.map((provider, i) => {
+                      const colors = getProviderColor(provider);
+                      return (
+                        <span key={i} className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors.bg} ${colors.text}`}>
+                          {provider}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
               );

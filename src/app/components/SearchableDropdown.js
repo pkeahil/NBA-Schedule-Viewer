@@ -98,7 +98,7 @@ export default function SearchableDropdown({
         <input
           ref={inputRef}
           type="text"
-          className="w-full px-2 py-1 pr-8 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="w-full px-2 py-1 pr-8 text-xs bg-white dark:bg-zinc-600 border border-zinc-300 dark:border-zinc-500 rounded focus:ring-2 focus:ring-orange-500 focus:outline-none"
           placeholder={placeholder}
           value={searchTerm}
           onChange={handleInputChange}

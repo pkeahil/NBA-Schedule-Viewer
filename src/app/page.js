@@ -85,7 +85,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-900">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-zinc-950">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
