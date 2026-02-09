@@ -3,30 +3,14 @@
 import React from 'react';
 import { getProviderColor } from '../utils/providerColors';
 import { getMatchupGradient, getTeamColors } from '../utils/teamColors';
+import { parseGameDate, parseGameTime, parseProviders } from '../utils/dateUtils';
 
 export default function TodaysBanner({ games }) {
   const todaysGames = games.filter(game => {
-    const getYear = (dateStr) => {
-      const month = dateStr.split(' ')[1];
-      return ['January', 'February', 'March', 'April', 'May', 'June'].includes(month) ? 2026 : 2025;
-    };
-    
-    const gameDate = new Date(game.date + ", " + getYear(game.date));
+    const gameDate = parseGameDate(game.date);
     const today = new Date();
-    
     return gameDate.toDateString() === today.toDateString();
-  }).sort((a, b) => {
-    const parseTime = (timeStr) => {
-      const [time, period] = timeStr.split(' ');
-      const [hours, minutes = '0'] = time.split(':');
-      let hour24 = parseInt(hours);
-      if (period === 'p.m.' && hour24 !== 12) hour24 += 12;
-      if (period === 'a.m.' && hour24 === 12) hour24 = 0;
-      return hour24 * 60 + parseInt(minutes);
-    };
-    
-    return parseTime(a.time) - parseTime(b.time);
-  });
+  }).sort((a, b) => parseGameTime(a.time) - parseGameTime(b.time));
 
   if (todaysGames.length === 0) {
     return (
@@ -50,7 +34,7 @@ export default function TodaysBanner({ games }) {
       <div className="overflow-x-auto">
         <div className="flex gap-4 pb-4" style={{ minWidth: 'max-content' }}>
           {todaysGames.map((game, index) => {
-            const providers = game.tvProvider.split(', ').map(p => p.trim());
+            const providers = parseProviders(game.tvProvider);
             const gradient = getMatchupGradient(game.awayTeam, game.homeTeam);
             const awayTeam = getTeamColors(game.awayTeam);
             const homeTeam = getTeamColors(game.homeTeam);

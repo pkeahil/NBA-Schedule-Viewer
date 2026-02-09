@@ -1,13 +1,10 @@
+import { parseGameDate } from './dateUtils';
+
 const parseTerms = (str) => str.toLowerCase().split(' or ').map(term => term.trim()).filter(Boolean);
 
 const matchesTerms = (value, terms) => terms.some(term => value.toLowerCase().includes(term));
 
-const getGameYear = (dateStr) => {
-  const month = dateStr.split(' ')[1];
-  return ['January', 'February', 'March', 'April', 'May', 'June'].includes(month) ? 2026 : 2025;
-};
-
-export function useGameFilters(data, filter, columnFilters, showOnlyFuture) {
+export function filterGames(data, filter, columnFilters, showOnlyFuture) {
   const globalTerms = filter ? parseTerms(filter) : null;
   const dateTerms = columnFilters.date ? parseTerms(columnFilters.date) : null;
   const timeTerms = columnFilters.time ? parseTerms(columnFilters.time) : null;
@@ -33,7 +30,7 @@ export function useGameFilters(data, filter, columnFilters, showOnlyFuture) {
     if (providerTerms && !matchesTerms(item.tvProvider, providerTerms)) return false;
     
     if (today) {
-      const gameDate = new Date(item.date + ", " + getGameYear(item.date));
+      const gameDate = parseGameDate(item.date);
       if (gameDate < today) return false;
     }
     

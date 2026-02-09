@@ -4,7 +4,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import SearchNavbar from "./components/SearchNavbar";
 import GamesTable from "./components/GamesTable";
 import TodaysBanner from "./components/TodaysBanner";
-import { useGameFilters } from "./hooks/useGameFilters";
+import { filterGames } from "./utils/filterGames";
+import { parseGameDate, parseGameTime } from "./utils/dateUtils";
 import games from './games.json';
 
 export default function Home() {
@@ -28,35 +29,21 @@ export default function Home() {
       homeTeam: item.home_team_name,
       tvProvider: item.tv_providers,
     })).sort((a, b) => {
-      const getYear = (dateStr) => {
-        const month = dateStr.split(' ')[1];
-        return ['January', 'February', 'March', 'April', 'May', 'June'].includes(month) ? 2026 : 2025;
-      };
-      const dateA = new Date(a.date + ", " + getYear(a.date));
-      const dateB = new Date(b.date + ", " + getYear(b.date));
+      const dateA = parseGameDate(a.date);
+      const dateB = parseGameDate(b.date);
       
       if (dateA.getTime() !== dateB.getTime()) {
         return dateA - dateB;
       }
       
-      // Same date, sort by time
-      const parseTime = (timeStr) => {
-        const [time, period] = timeStr.split(' ');
-        const [hours, minutes = '0'] = time.split(':');
-        let hour24 = parseInt(hours);
-        if (period === 'p.m.' && hour24 !== 12) hour24 += 12;
-        if (period === 'a.m.' && hour24 === 12) hour24 = 0;
-        return hour24 * 60 + parseInt(minutes);
-      };
-      
-      return parseTime(a.time) - parseTime(b.time);
+      return parseGameTime(a.time) - parseGameTime(b.time);
     });
     setData(parsedData);
     setLoading(false);
   }, []);
 
   const filteredData = useMemo(() => 
-    useGameFilters(data, filter, columnFilters, showOnlyFuture),
+    filterGames(data, filter, columnFilters, showOnlyFuture),
     [data, filter, columnFilters, showOnlyFuture]
   );
 
