@@ -1,6 +1,21 @@
 
 # Changelog
 
+## [1.2.0] - 2026-02-16
+### Added
+- Automatic timezone conversion for game times based on user's local timezone
+- Timezone abbreviation display (e.g., CST, EST, PST) for clarity
+- Updated schedule data through April 2026
+- Web scraper (scrape-games.js) to extract NBA schedule data from articles
+
+### Changed
+- Merged new schedule data (Feb 15 - April 17) from nba-games.json
+- Standardized all stored times to Eastern Time (ET) format
+- Game times now display in user's browser timezone instead of fixed ET
+
+### Fixed
+- Fixed SearchableDropdown crash when options array contains undefined values
+
 ## [1.1.0] - 2026-02-07
 ### Added
 - Compact sticky search navbar with integrated title
@@ -45,4 +60,4 @@
 ## Todo:
 - Create a "Stats" page
   - Ability to filter out certain stat columns
-  - Ability to set the column order of the stats
+  - Ability to set the column order of the stats

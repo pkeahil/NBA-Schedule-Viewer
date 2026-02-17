@@ -1,4 +1,5 @@
 const { chromium } = require('playwright');
+const fs = require('fs');
 
 async function scrapeNBAGames(url) {
   const browser = await chromium.launch({ 
@@ -55,11 +56,20 @@ async function scrapeNBAGames(url) {
 
 // Usage
 async function main() {
-  const url = process.argv[2] || 'https://www.nba.com/schedule';
+  const months = ['February', 'March', 'April'];
+  const allGames = [];
   
   try {
-    const games = await scrapeNBAGames(url);
-    console.log(JSON.stringify(games, null, 2));
+    for (const month of months) {
+      const url = `https://www.nba.com/schedule?cal=${month}&pd=false&region=1`;
+      console.log(`Scraping ${month}...`);
+      const games = await scrapeNBAGames(url);
+      allGames.push(...games);
+      console.log(`Found ${games.length} games in ${month}`);
+    }
+    
+    fs.writeFileSync('nba-games.json', JSON.stringify(allGames, null, 2));
+    console.log(`\nTotal: ${allGames.length} games saved to nba-games.json`);
   } catch (error) {
     console.error('Error scraping games:', error);
   }

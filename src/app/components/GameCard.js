@@ -1,11 +1,12 @@
 import { getProviderColor } from '../utils/providerColors';
 import { getTeamColors } from '../utils/teamColors';
-import { parseProviders } from '../utils/dateUtils';
+import { parseProviders, formatTimeInLocalTZ } from '../utils/dateUtils';
 
 export default function GameCard({ game }) {
   const providers = parseProviders(game.tvProvider);
   const awayTeam = getTeamColors(game.awayTeam);
   const homeTeam = getTeamColors(game.homeTeam);
+  const localTime = formatTimeInLocalTZ(game.date, game.time);
 
   return (
     <div className="bg-zinc-50 dark:bg-zinc-700 rounded-lg p-4">
@@ -25,7 +26,7 @@ export default function GameCard({ game }) {
         </div>
       </div>
       <div className="text-center text-xs text-zinc-600 dark:text-zinc-400 mb-2">
-        {game.date} • {game.time} ET
+        {game.date} • {localTime}
       </div>
       <div className="flex flex-wrap gap-1 justify-center">
         {providers.map((provider, i) => {

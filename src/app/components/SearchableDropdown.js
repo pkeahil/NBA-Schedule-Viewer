@@ -18,7 +18,7 @@ export default function SearchableDropdown({
 
   const filteredOptions = useMemo(() => 
     options.filter(option =>
-      option.toLowerCase().includes(searchTerm.toLowerCase())
+      option && option.toLowerCase().includes(searchTerm.toLowerCase())
     ),
     [options, searchTerm]
   );

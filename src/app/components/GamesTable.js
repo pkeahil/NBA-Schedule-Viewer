@@ -5,7 +5,7 @@ import SearchableDropdown from './SearchableDropdown';
 import GameCard from './GameCard';
 import { getProviderColor } from '../utils/providerColors';
 import { getTeamColors } from '../utils/teamColors';
-import { parseProviders } from '../utils/dateUtils';
+import { parseProviders, formatTimeInLocalTZ } from '../utils/dateUtils';
 
 export default function GamesTable({ data, columnFilters, setColumnFilters, showOnlyFuture, setShowOnlyFuture }) {
   const uniqueTeams = useMemo(() => 
@@ -103,10 +103,11 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, show
                 const providers = parseProviders(item.tvProvider);
                 const awayTeam = getTeamColors(item.awayTeam);
                 const homeTeam = getTeamColors(item.homeTeam);
+                const localTime = formatTimeInLocalTZ(item.date, item.time);
                 return (
                   <tr key={index} className="hover:bg-zinc-50 dark:hover:bg-zinc-700/50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">{item.date}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">{item.time} ET</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">{localTime}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-zinc-100">
                       <div className="flex items-center gap-2">
                         {awayTeam.logo && (
