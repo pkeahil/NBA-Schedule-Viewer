@@ -40,12 +40,17 @@ async function scrapeNBAGames(url) {
         .filter(provider => targetNetworks.includes(provider))
         .join(', ');
       
+      
+      // Get game ID from preview link
+      const previewLink = game.querySelector('a[href*="/game/"]');
+      const gameId = previewLink?.href?.match(/\/game\/[^\/]+-(\d+)/)?.[1];
       return {
         date: dayHeader,
         away_team_name: awayTeam,
         home_team_name: homeTeam,
         time: time,
-        tv_providers: tvProviders
+        tv_providers: tvProviders,
+        game_id: gameId
       };
     }).filter(game => game.tv_providers); // Only return games with target networks
   });

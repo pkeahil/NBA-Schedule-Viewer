@@ -8,11 +8,13 @@
 - Clickable game cards on mobile view for past games with box scores
 - Script to fetch and match game IDs from NBA schedule API (add-game-ids.js)
 - Script to scrape box score data from NBA CDN API (scrape-boxscore.js)
+- Automatic game ID extraction from preview links in scraper
 
 ### Changed
 - Games table now links to box scores for 212 completed games
 - Game cards on mobile now become fully clickable for past games
 - Added hover effect to clickable game cards
+- Scraper now automatically extracts game IDs from schedule page
 - Added game_id field to games.json for box score integration
 
 ### Fixed
