@@ -1,15 +1,19 @@
 import { getProviderColor } from '../utils/providerColors';
 import { getTeamColors } from '../utils/teamColors';
-import { parseProviders, formatTimeInLocalTZ } from '../utils/dateUtils';
+import { parseProviders, formatTimeInLocalTZ, parseGameDate } from '../utils/dateUtils';
 
 export default function GameCard({ game }) {
   const providers = parseProviders(game.tvProvider);
   const awayTeam = getTeamColors(game.awayTeam);
   const homeTeam = getTeamColors(game.homeTeam);
   const localTime = formatTimeInLocalTZ(game.date, game.time);
+  const gameDate = parseGameDate(game.date);
+  const isPast = gameDate < new Date();
+  const hasGameId = game.gameId;
+  const showLink = isPast && hasGameId;
 
-  return (
-    <div className="bg-zinc-50 dark:bg-zinc-700 rounded-lg p-4">
+  const CardContent = () => (
+    <>
       <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center mb-2">
         <div className="flex items-center gap-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 justify-end text-right">
           <span className="flex-1">{game.awayTeam}</span>
@@ -38,6 +42,20 @@ export default function GameCard({ game }) {
           );
         })}
       </div>
+    </>
+  );
+
+  if (showLink) {
+    return (
+      <a href={`/boxscore/${game.gameId}`} className="block bg-zinc-50 dark:bg-zinc-700 rounded-lg p-4 hover:bg-zinc-100 dark:hover:bg-zinc-600 transition-colors">
+        <CardContent />
+      </a>
+    );
+  }
+
+  return (
+    <div className="bg-zinc-50 dark:bg-zinc-700 rounded-lg p-4">
+      <CardContent />
     </div>
   );
 }
