@@ -36,7 +36,25 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              const theme = localStorage.getItem('theme') || 'system';
+              const root = document.documentElement;
+              root.classList.remove('dark', 'light');
+              if (theme === 'system') {
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                  root.classList.add('dark');
+                }
+              } else if (theme === 'dark') {
+                root.classList.add('dark');
+              }
+            })();
+          `
+        }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

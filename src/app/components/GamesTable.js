@@ -5,7 +5,7 @@ import SearchableDropdown from './SearchableDropdown';
 import GameCard from './GameCard';
 import { getProviderColor } from '../utils/providerColors';
 import { getTeamColors } from '../utils/teamColors';
-import { parseProviders, formatTimeInLocalTZ } from '../utils/dateUtils';
+import { parseProviders, formatTimeInLocalTZ, parseGameDate } from '../utils/dateUtils';
 
 export default function GamesTable({ data, columnFilters, setColumnFilters, showOnlyFuture, setShowOnlyFuture }) {
   const uniqueTeams = useMemo(() => 
@@ -104,26 +104,34 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, show
                 const awayTeam = getTeamColors(item.awayTeam);
                 const homeTeam = getTeamColors(item.homeTeam);
                 const localTime = formatTimeInLocalTZ(item.date, item.time);
+                const gameDate = parseGameDate(item.date);
+                const isPast = gameDate < new Date();
+                const hasGameId = item.gameId;
+                const showLink = isPast && hasGameId;
+                
+                const MatchupCell = ({ team, logo, isAway }) => (
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    <div className="flex items-center gap-2">
+                      {logo && <img src={logo} alt={team} className="w-6 h-6" />}
+                      {team}
+                    </div>
+                  </td>
+                );
+                
                 return (
                   <tr key={index} className="hover:bg-zinc-50 dark:hover:bg-zinc-700/50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">{item.date}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">
+                      {showLink ? (
+                        <a href={`/boxscore/${item.gameId}`} className="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 hover:underline">
+                          {item.date}
+                        </a>
+                      ) : (
+                        item.date
+                      )}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">{localTime}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                      <div className="flex items-center gap-2">
-                        {awayTeam.logo && (
-                          <img src={awayTeam.logo} alt={item.awayTeam} className="w-6 h-6" />
-                        )}
-                        {item.awayTeam}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                      <div className="flex items-center gap-2">
-                        {homeTeam.logo && (
-                          <img src={homeTeam.logo} alt={item.homeTeam} className="w-6 h-6" />
-                        )}
-                        {item.homeTeam}
-                      </div>
-                    </td>
+                    <MatchupCell team={item.awayTeam} logo={awayTeam.logo} isAway={true} />
+                    <MatchupCell team={item.homeTeam} logo={homeTeam.logo} isAway={false} />
                     <td className="px-6 py-4 text-sm text-zinc-900 dark:text-zinc-100">
                       <div className="flex flex-wrap gap-1">
                         {providers.map((provider, i) => {

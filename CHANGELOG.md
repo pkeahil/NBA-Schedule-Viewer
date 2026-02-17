@@ -1,6 +1,22 @@
 
 # Changelog
 
+## [1.3.0] - 2026-02-16
+### Added
+- Box score page at `/boxscore/[gameId]` showing detailed player statistics
+- Clickable date links in games table for past games with available box scores
+- Script to fetch and match game IDs from NBA schedule API (add-game-ids.js)
+- Script to scrape box score data from NBA CDN API (scrape-boxscore.js)
+
+### Changed
+- Games table now links to box scores for 212 completed games
+- Added game_id field to games.json for box score integration
+
+### Fixed
+- Theme persistence across all pages including box score page
+- Hydration error by adding suppressHydrationWarning to html element
+- Games table now properly sorted from October through April
+
 ## [1.2.0] - 2026-02-16
 ### Added
 - Automatic timezone conversion for game times based on user's local timezone

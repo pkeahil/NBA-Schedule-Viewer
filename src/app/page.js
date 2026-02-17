@@ -28,6 +28,7 @@ export default function Home() {
       awayTeam: item.away_team_name,
       homeTeam: item.home_team_name,
       tvProvider: item.tv_providers,
+      gameId: item.game_id,
     })).sort((a, b) => {
       const dateA = parseGameDate(a.date);
       const dateB = parseGameDate(b.date);
