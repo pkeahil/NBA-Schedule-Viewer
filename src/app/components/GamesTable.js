@@ -7,7 +7,7 @@ import { getProviderColor } from '../utils/providerColors';
 import { getTeamColors } from '../utils/teamColors';
 import { parseProviders, formatTimeInLocalTZ, parseGameDate } from '../utils/dateUtils';
 
-export default function GamesTable({ data, columnFilters, setColumnFilters, showOnlyFuture, setShowOnlyFuture }) {
+export default function GamesTable({ data, columnFilters, setColumnFilters, timeFilter, setTimeFilter }) {
   const uniqueTeams = useMemo(() => 
     [...new Set([
       ...data.map(item => item.awayTeam),
@@ -25,15 +25,38 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, show
     <div className="bg-white dark:bg-zinc-800 rounded-xl shadow overflow-hidden">
       <div className="px-6 py-3 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-zinc-800 dark:text-white">All Games</h2>
-        <label className="flex items-center cursor-pointer group">
-          <input
-            type="checkbox"
-            checked={showOnlyFuture}
-            onChange={(e) => setShowOnlyFuture(e.target.checked)}
-            className="w-4 h-4 text-orange-600 bg-zinc-100 border-zinc-300 rounded focus:ring-orange-500 dark:bg-zinc-700 dark:border-zinc-600"
-          />
-          <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Show only future games</span>
-        </label>
+        <div className="flex gap-4">
+          <label className="flex items-center cursor-pointer group">
+            <input
+              type="radio"
+              name="timeFilter"
+              checked={timeFilter === "all"}
+              onChange={() => setTimeFilter("all")}
+              className="w-4 h-4 text-orange-600 bg-zinc-100 border-zinc-300 focus:ring-orange-500 dark:bg-zinc-700 dark:border-zinc-600"
+            />
+            <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">All games</span>
+          </label>
+          <label className="flex items-center cursor-pointer group">
+            <input
+              type="radio"
+              name="timeFilter"
+              checked={timeFilter === "future"}
+              onChange={() => setTimeFilter("future")}
+              className="w-4 h-4 text-orange-600 bg-zinc-100 border-zinc-300 focus:ring-orange-500 dark:bg-zinc-700 dark:border-zinc-600"
+            />
+            <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Future games</span>
+          </label>
+          <label className="flex items-center cursor-pointer group">
+            <input
+              type="radio"
+              name="timeFilter"
+              checked={timeFilter === "past"}
+              onChange={() => setTimeFilter("past")}
+              className="w-4 h-4 text-orange-600 bg-zinc-100 border-zinc-300 focus:ring-orange-500 dark:bg-zinc-700 dark:border-zinc-600"
+            />
+            <span className="ml-2 text-sm text-zinc-700 dark:text-zinc-300 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Past games</span>
+          </label>
+        </div>
       </div>
       
       {/* Desktop Table */}
@@ -119,7 +142,7 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, show
                 );
                 
                 return (
-                  <tr key={index} className="hover:bg-zinc-50 dark:hover:bg-zinc-700/50">
+                  <tr key={item.gameId || `${item.date}-${item.time}-${item.awayTeam}-${item.homeTeam}`} className="hover:bg-zinc-50 dark:hover:bg-zinc-700/50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-900 dark:text-zinc-100">
                       {showLink ? (
                         <a href={`/boxscore/${item.gameId}`} className="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 hover:underline">

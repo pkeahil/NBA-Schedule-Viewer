@@ -19,7 +19,7 @@ export default function Home() {
     homeTeam: "",
     tvProvider: ""
   });
-  const [showOnlyFuture, setShowOnlyFuture] = useState(false);
+  const [timeFilter, setTimeFilter] = useState("all"); // "all", "future", "past"
 
   useEffect(() => {
     const parsedData = games.map(item => ({
@@ -44,8 +44,10 @@ export default function Home() {
   }, []);
 
   const filteredData = useMemo(() => 
-    filterGames(data, filter, columnFilters, showOnlyFuture),
-    [data, filter, columnFilters, showOnlyFuture]
+    filterGames(data, filter, columnFilters, timeFilter).filter(game => 
+      game.awayTeam && game.homeTeam && game.awayTeam !== 'TBD' && game.homeTeam !== 'TBD'
+    ),
+    [data, filter, columnFilters, timeFilter]
   );
 
   const handleClearFilters = (key) => {
@@ -111,8 +113,8 @@ export default function Home() {
               data={filteredData}
               columnFilters={columnFilters}
               setColumnFilters={setColumnFilters}
-              showOnlyFuture={showOnlyFuture}
-              setShowOnlyFuture={setShowOnlyFuture}
+              timeFilter={timeFilter}
+              setTimeFilter={setTimeFilter}
             />
           </>
         )}
