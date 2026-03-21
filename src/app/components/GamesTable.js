@@ -155,15 +155,23 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, time
                     <MatchupCell team={item.awayTeam} logo={awayTeam.logo} isAway={true} />
                     <MatchupCell team={item.homeTeam} logo={homeTeam.logo} isAway={false} />
                     <td className="px-6 py-4 text-sm text-zinc-900 dark:text-zinc-100">
-                      <div className="flex flex-wrap gap-1">
-                        {providers.map((provider, i) => {
+                      <div className="flex gap-1 items-center">
+                        {providers.slice(0, 2).map((provider, i) => {
                           const colors = getProviderColor(provider);
                           return (
-                            <span key={i} className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors.bg} ${colors.text}`}>
+                            <span key={i} className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${colors.bg} ${colors.text}`}>
                               {provider}
                             </span>
                           );
                         })}
+                        {providers.length > 2 && (
+                          <span
+                            title={providers.slice(2).join(', ')}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-200 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-300 cursor-default whitespace-nowrap"
+                          >
+                            +{providers.length - 2} more
+                          </span>
+                        )}
                       </div>
                     </td>
                   </tr>
