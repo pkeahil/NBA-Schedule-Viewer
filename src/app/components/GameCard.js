@@ -1,14 +1,13 @@
 import { getProviderColor } from '../utils/providerColors';
 import { getTeamColors } from '../utils/teamColors';
-import { parseProviders, formatTimeInLocalTZ, parseGameDate } from '../utils/dateUtils';
+import { parseProviders, formatTimeInLocalTZ } from '../utils/dateUtils';
 
 export default function GameCard({ game }) {
   const providers = parseProviders(game.tvProvider);
   const awayTeam = getTeamColors(game.awayTeam);
   const homeTeam = getTeamColors(game.homeTeam);
-  const localTime = formatTimeInLocalTZ(game.date, game.time);
-  const gameDate = parseGameDate(game.date);
-  const isPast = gameDate < new Date();
+  const localTime = formatTimeInLocalTZ(game.gameDateTime);
+  const isPast = game.gameDateTime < new Date();
   const hasGameId = game.gameId;
   const showLink = isPast && hasGameId;
 

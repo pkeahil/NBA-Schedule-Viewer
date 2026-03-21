@@ -3,14 +3,13 @@
 import React from 'react';
 import { getProviderColor } from '../utils/providerColors';
 import { getMatchupGradient, getTeamColors } from '../utils/teamColors';
-import { parseGameDate, parseGameTime, parseProviders } from '../utils/dateUtils';
+import { parseProviders, parseGameDateTime } from '../utils/dateUtils';
 
 export default function TodaysBanner({ games }) {
   const todaysGames = games.filter(game => {
-    const gameDate = parseGameDate(game.date);
     const today = new Date();
-    return gameDate.toDateString() === today.toDateString();
-  }).sort((a, b) => parseGameTime(a.time) - parseGameTime(b.time));
+    return game.gameDateTime.toDateString() === today.toDateString();
+  }).sort((a, b) => a.gameDateTime - b.gameDateTime);
 
   if (todaysGames.length === 0) {
     return (

@@ -1,78 +1,18 @@
-"use client";
+import ScheduleClient from "./ScheduleClient";
+import { fetchSchedule } from "./utils/fetchSchedule";
 
-import React, { useState, useEffect, useMemo } from 'react';
-import SearchNavbar from "./components/SearchNavbar";
-import GamesTable from "./components/GamesTable";
-import TodaysBanner from "./components/TodaysBanner";
-import { filterGames } from "./utils/filterGames";
-import { parseGameDate, parseGameTime } from "./utils/dateUtils";
-import games from './games.json';
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "NBA National TV Schedule Viewer",
+  "description": "Find NBA games on your TV provider. Filter by ESPN, TNT, ABC, NBC, Prime Video and more.",
+  "url": "https://nbaschd.vercel.app",
+  "applicationCategory": "SportsApplication",
+  "operatingSystem": "Web Browser"
+};
 
-export default function Home() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("");
-  const [columnFilters, setColumnFilters] = useState({
-    date: "",
-    time: "",
-    awayTeam: "",
-    homeTeam: "",
-    tvProvider: ""
-  });
-  const [timeFilter, setTimeFilter] = useState("all"); // "all", "future", "past"
-
-  useEffect(() => {
-    const parsedData = games.map(item => ({
-      date: item.date,
-      time: item.time,
-      awayTeam: item.away_team_name,
-      homeTeam: item.home_team_name,
-      tvProvider: item.tv_providers,
-      gameId: item.game_id,
-    })).sort((a, b) => {
-      const dateA = parseGameDate(a.date);
-      const dateB = parseGameDate(b.date);
-      
-      if (dateA.getTime() !== dateB.getTime()) {
-        return dateA - dateB;
-      }
-      
-      return parseGameTime(a.time) - parseGameTime(b.time);
-    });
-    setData(parsedData);
-    setLoading(false);
-  }, []);
-
-  const filteredData = useMemo(() => 
-    filterGames(data, filter, columnFilters, timeFilter).filter(game => 
-      game.awayTeam && game.homeTeam && game.awayTeam !== 'TBD' && game.homeTeam !== 'TBD'
-    ),
-    [data, filter, columnFilters, timeFilter]
-  );
-
-  const handleClearFilters = (key) => {
-    if (key === 'all') {
-      setColumnFilters({
-        date: "",
-        time: "",
-        awayTeam: "",
-        homeTeam: "",
-        tvProvider: ""
-      });
-    } else {
-      setColumnFilters(prev => ({ ...prev, [key]: "" }));
-    }
-  };
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "NBA National TV Schedule Viewer",
-    "description": "Find NBA games on your TV provider. Filter by ESPN, TNT, ABC, NBC, Prime Video and more.",
-    "url": "https://nbaschd.vercel.app",
-    "applicationCategory": "SportsApplication",
-    "operatingSystem": "Web Browser"
-  };
+export default async function Home() {
+  const games = await fetchSchedule();
 
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-zinc-950">
@@ -80,45 +20,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      
-      <SearchNavbar 
-        filter={filter}
-        setFilter={setFilter}
-        resultCount={filteredData.length}
-        columnFilters={columnFilters}
-        onClearFilters={handleClearFilters}
-      />
-      
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {loading ? (
-          <div className="space-y-8">
-            <div className="bg-white dark:bg-zinc-800 rounded-xl shadow p-6 animate-pulse">
-              <div className="h-8 bg-zinc-200 dark:bg-zinc-700 rounded w-1/3 mb-4"></div>
-              <div className="h-4 bg-zinc-200 dark:bg-zinc-700 rounded w-2/3 mb-6"></div>
-              <div className="h-12 bg-zinc-200 dark:bg-zinc-700 rounded"></div>
-            </div>
-            <div className="bg-white dark:bg-zinc-800 rounded-xl shadow p-6 animate-pulse">
-              <div className="space-y-4">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className="h-16 bg-zinc-200 dark:bg-zinc-700 rounded"></div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <>
-            <TodaysBanner games={data} />
-
-            <GamesTable 
-              data={filteredData}
-              columnFilters={columnFilters}
-              setColumnFilters={setColumnFilters}
-              timeFilter={timeFilter}
-              setTimeFilter={setTimeFilter}
-            />
-          </>
-        )}
-      </main>
+      <ScheduleClient games={games} />
     </div>
   );
 }

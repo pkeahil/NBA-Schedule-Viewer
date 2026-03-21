@@ -5,7 +5,7 @@ import SearchableDropdown from './SearchableDropdown';
 import GameCard from './GameCard';
 import { getProviderColor } from '../utils/providerColors';
 import { getTeamColors } from '../utils/teamColors';
-import { parseProviders, formatTimeInLocalTZ, parseGameDate } from '../utils/dateUtils';
+import { parseProviders, formatTimeInLocalTZ } from '../utils/dateUtils';
 
 export default function GamesTable({ data, columnFilters, setColumnFilters, timeFilter, setTimeFilter }) {
   const uniqueTeams = useMemo(() => 
@@ -126,9 +126,8 @@ export default function GamesTable({ data, columnFilters, setColumnFilters, time
                 const providers = parseProviders(item.tvProvider);
                 const awayTeam = getTeamColors(item.awayTeam);
                 const homeTeam = getTeamColors(item.homeTeam);
-                const localTime = formatTimeInLocalTZ(item.date, item.time);
-                const gameDate = parseGameDate(item.date);
-                const isPast = gameDate < new Date();
+                const localTime = formatTimeInLocalTZ(item.gameDateTime);
+                const isPast = item.gameDateTime < new Date();
                 const hasGameId = item.gameId;
                 const showLink = isPast && hasGameId;
                 
